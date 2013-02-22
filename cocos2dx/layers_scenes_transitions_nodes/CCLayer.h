@@ -60,6 +60,10 @@ All features from CCNode are valid, plus the following new features:
 class CC_DLL CCLayer : public CCNode, public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate
 {
 public:
+    virtual void setFrame(CCRect frame);
+    virtual CCRect frame();
+    
+public:
     CCLayer();
     virtual ~CCLayer();
     virtual bool init();

@@ -79,6 +79,32 @@ bool CCLayer::init()
     return bRet;
 }
 
+void CCLayer::setFrame(CCRect frame) {
+    CCPoint point = this->getAnchorPoint();
+    m_uikitStyleY = frame.origin.y;
+    
+    float dy = frame.size.height;
+    float y = frame.origin.y + dy;
+    
+    CCNode *superNode = this->getParent();
+    if(superNode) {
+        CCSize size = superNode->getContentSize();
+        y = size.height - y;
+    }
+    
+    CCPoint newPosition = CCPointMake(frame.origin.x, y);
+    this->setContentSize(frame.size);
+    this->setPosition(newPosition);
+}
+
+CCRect CCLayer::frame() {
+    CCPoint point = this->getAnchorPoint();
+    CCPoint position = this->getPosition();
+    CCSize size = this->getContentSize();
+    CCRect frame = CCRect(position.x, m_uikitStyleY, size.width, size.height);
+    return frame;
+}
+
 CCLayer *CCLayer::create()
 {
     CCLayer *pRet = new CCLayer();

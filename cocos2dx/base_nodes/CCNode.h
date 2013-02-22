@@ -124,6 +124,33 @@ enum {
 class CC_DLL CCNode : public CCObject
 {
 public:
+    virtual bool initWithFrame(CCRect frame);
+    virtual void setFrame(CCRect frame);
+    virtual CCRect frame();
+    virtual CCRect bounds();
+    
+    virtual void setX(float x);
+    virtual float x();
+    
+    virtual void setY(float y);
+    virtual float y();
+    
+    virtual void setWidth(float width);
+    virtual float width();
+    
+    virtual void setHeight(float height);
+    virtual float height();
+    
+    virtual void setSize(CCSize size);
+    virtual CCSize size();
+    
+    virtual void addSubview(CCNode *node);
+    virtual void removeFromSuperview();
+    
+protected:
+    int    m_uikitStyleY;      /// xk, y
+    
+public:
     //////////////////////////////
     /// @{
     /// @name Constructor, Distructor and Initializers

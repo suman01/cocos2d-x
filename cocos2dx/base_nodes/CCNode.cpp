@@ -134,6 +134,110 @@ CCNode::~CCNode(void)
     CC_SAFE_RELEASE(m_pChildren);
 }
 
+bool CCNode::initWithFrame(CCRect frame) {
+    this->setFrame(frame);
+    return true;
+}
+
+void CCNode::setFrame(CCRect frame) {
+    CCPoint point = this->getAnchorPoint();
+    m_uikitStyleY = frame.origin.y;
+    
+    float dx = point.x * frame.size.width;
+    float dy = point.y * frame.size.height;
+    
+    float y = frame.origin.y + dy;
+    CCNode *superNode = this->getParent();
+    if(superNode) {
+        CCSize size = superNode->getContentSize();
+        y = size.height - y;
+    }
+    
+    CCPoint newPosition = CCPointMake(frame.origin.x + dx, y);
+    this->setContentSize(frame.size);
+    this->setPosition(newPosition);
+}
+
+CCRect CCNode::bounds() {
+    CCSize size = this->getContentSize();
+    CCRect bounds = CCRect(0, 0, size.width, size.height);
+    return bounds;
+}
+
+CCRect CCNode::frame() {
+    CCPoint point = this->getAnchorPoint();
+    CCPoint position = this->getPosition();
+    CCSize size = this->getContentSize();
+    
+    float dx = point.x * size.width;
+    
+    CCRect frame = CCRect(position.x - dx, m_uikitStyleY, size.width, size.height);
+    
+    return frame;
+}
+
+void CCNode::setX(float x) {
+    CCRect frame = this->frame();
+    frame.origin.x = x;
+    this->setFrame(frame);
+}
+
+float CCNode::x() {
+    return this->frame().origin.x;
+}
+
+void CCNode::setY(float y) {
+    CCRect frame = this->frame();
+    frame.origin.y = y;
+    
+    this->setFrame(frame);
+}
+
+float CCNode::y() {
+    return this->frame().origin.y;
+}
+
+void CCNode::setSize(CCSize size) {
+    CCRect frame = this->frame();
+    frame.size = size;
+    this->setFrame(frame);
+}
+
+CCSize CCNode::size() {
+    return this->getContentSize();
+}
+
+void CCNode::setWidth(float width) {
+    CCRect frame = this->frame();
+    frame.size.width = width;
+    this->setFrame(frame);
+}
+
+float CCNode::width() {
+    return this->getContentSize().width;
+}
+
+void CCNode::setHeight(float height) {
+    CCRect frame = this->frame();
+    frame.size.height = height;
+    this->setFrame(frame);
+}
+
+float CCNode::height() {
+    return this->getContentSize().height;
+}
+
+void CCNode::addSubview(CCNode *node) {
+    CCRect frame = node->frame();
+    this->addChild(node);
+    node->setFrame(frame);
+}
+
+void CCNode::removeFromSuperview() {
+    this->removeFromParent();
+}
+
+
 float CCNode::getSkewX()
 {
     return m_fSkewX;
